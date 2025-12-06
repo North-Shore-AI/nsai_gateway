@@ -333,9 +333,9 @@ MIT License - see LICENSE file for details.
 
 ## Related Projects
 
-- [nsai_registry](../nsai_registry) - Service discovery and registration
-- [crucible_framework](../crucible_framework) - ML experimentation framework
-- [cns](../cns) - Critic-Network Synthesis
+- [nsai_registry](https://github.com/North-Shore-AI/tinkerer/tree/master/nsai_registry) - Service discovery and registration
+- [crucible_framework](https://github.com/North-Shore-AI/tinkerer/tree/master/crucible_framework) - ML experimentation framework
+- [cns](https://github.com/North-Shore-AI/tinkerer/tree/master/cns) - Critic-Network Synthesis
 
 ## Support
 
