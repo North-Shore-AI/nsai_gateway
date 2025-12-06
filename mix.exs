@@ -1,17 +1,26 @@
 defmodule NsaiGateway.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+  @source_url "https://github.com/North-Shore-AI/nsai_gateway"
+
   def project do
     [
       app: :nsai_gateway,
-      version: "0.1.0",
+      version: @version,
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      description: "Unified API Gateway for North Shore AI services",
-      package: package()
+      name: "NsaiGateway",
+      source_url: @source_url,
+      homepage_url: @source_url,
+      description: description(),
+      package: package(),
+      docs: docs()
     ]
   end
+
+  def version, do: @version
 
   # Run "mix help compile.app" to learn about applications.
   def application do
@@ -45,10 +54,27 @@ defmodule NsaiGateway.MixProject do
     ]
   end
 
+  defp description do
+    "Unified API Gateway for North Shore AI services - handles routing, authentication, rate limiting, and circuit breaking"
+  end
+
   defp package do
     [
+      name: "nsai_gateway",
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/North-Shore-AI/nsai_gateway"}
+      links: %{"GitHub" => @source_url},
+      files: ~w(lib mix.exs README.md LICENSE assets)
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      source_ref: "v#{@version}",
+      source_url: @source_url,
+      assets: %{"assets" => "assets"},
+      logo: "assets/nsai_gateway.svg",
+      extras: ["README.md", "LICENSE"]
     ]
   end
 end
