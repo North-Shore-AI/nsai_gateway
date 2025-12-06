@@ -11,8 +11,11 @@ defmodule NsaiGateway.Application do
   def start(_type, _args) do
     # Attach telemetry handlers
     NsaiGateway.Telemetry.attach_handlers()
+    NsaiGateway.Metrics.setup()
 
     children = [
+      # API Key Manager
+      NsaiGateway.Auth.ApiKeyManager,
       # HTTP Server
       {Plug.Cowboy, scheme: :http, plug: NsaiGateway.Router, options: [port: cowboy_port()]}
     ]

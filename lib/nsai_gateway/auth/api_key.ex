@@ -9,6 +9,7 @@ defmodule NsaiGateway.Auth.ApiKey do
   @doc """
   Verifies an API key and returns the associated tenant.
   """
+  @spec verify(String.t()) :: {:ok, String.t()} | {:error, :invalid_key}
   def verify(key) when is_binary(key) do
     api_keys = Application.get_env(:nsai_gateway, :api_keys, %{})
 
@@ -18,11 +19,13 @@ defmodule NsaiGateway.Auth.ApiKey do
     end
   end
 
+  @spec verify(term()) :: {:error, :invalid_key}
   def verify(_), do: {:error, :invalid_key}
 
   @doc """
   Generates a new API key (for administrative use).
   """
+  @spec generate() :: String.t()
   def generate do
     :crypto.strong_rand_bytes(32)
     |> Base.encode64(padding: false)

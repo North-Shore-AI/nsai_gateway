@@ -25,6 +25,7 @@ defmodule NsaiGateway.Telemetry do
   @doc """
   Returns the telemetry setup for use in the application supervisor.
   """
+  @spec setup() :: keyword()
   def setup do
     [
       name: __MODULE__,
@@ -36,6 +37,7 @@ defmodule NsaiGateway.Telemetry do
   @doc """
   Attaches telemetry handlers for logging and metrics.
   """
+  @spec attach_handlers() :: :ok | {:error, :already_exists}
   def attach_handlers do
     events = [
       [:nsai_gateway, :proxy, :success],
@@ -60,16 +62,19 @@ defmodule NsaiGateway.Telemetry do
     ]
   end
 
+  @spec system_memory() :: non_neg_integer()
   def system_memory do
     :erlang.memory(:total)
   end
 
+  @spec process_count() :: non_neg_integer()
   def process_count do
     :erlang.system_info(:process_count)
   end
 
   # Event handlers
 
+  @spec handle_event(list(atom()), map(), map(), term()) :: :ok
   def handle_event([:nsai_gateway, :proxy, :success], measurements, metadata, _config) do
     duration_ms = System.convert_time_unit(measurements.duration, :native, :millisecond)
 

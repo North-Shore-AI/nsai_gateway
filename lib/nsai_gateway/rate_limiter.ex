@@ -10,7 +10,10 @@ defmodule NsaiGateway.RateLimiter do
 
   @doc """
   Checks rate limits for the current request.
+
+  Returns the connection if within limits, or halts with 429 if rate limited.
   """
+  @spec check(Plug.Conn.t()) :: Plug.Conn.t()
   def check(conn) do
     tenant = conn.assigns[:tenant] || "anonymous"
     endpoint = get_endpoint(conn)

@@ -10,6 +10,7 @@ defmodule NsaiGateway.Auth.JWT do
   @doc """
   Verifies a JWT token and returns the claims.
   """
+  @spec verify_token(String.t()) :: {:ok, map()} | {:error, term()}
   def verify_token(token) when is_binary(token) do
     signer = get_signer()
     config = build_token_config()
@@ -19,6 +20,7 @@ defmodule NsaiGateway.Auth.JWT do
   @doc """
   Generates a JWT token for a tenant (for testing/administrative use).
   """
+  @spec generate(String.t(), String.t(), integer()) :: {:ok, String.t(), map()} | {:error, term()}
   def generate(tenant, user_id, _ttl_seconds \\ 3600) do
     signer = get_signer()
 

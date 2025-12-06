@@ -12,7 +12,10 @@ defmodule NsaiGateway.Auth do
 
   @doc """
   Authenticates the connection using either API key or JWT token.
+
+  Returns a Plug.Conn with authentication assigns set, or halts with 401 if authentication fails.
   """
+  @spec authenticate(Plug.Conn.t()) :: Plug.Conn.t()
   def authenticate(conn) do
     case get_auth_header(conn) do
       {:bearer, token} ->

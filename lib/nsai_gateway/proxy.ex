@@ -9,6 +9,8 @@ defmodule NsaiGateway.Proxy do
   import Plug.Conn
   require Logger
 
+  alias NsaiGateway.{CircuitBreaker, Tracing}
+
   @behaviour Plug
 
   @impl true
@@ -28,7 +30,7 @@ defmodule NsaiGateway.Proxy do
         :telemetry.execute(
           [:nsai_gateway, :proxy, :success],
           %{duration: duration},
-          %{service: service, status: response.status}
+          %{service: service, status: response.status, tenant: tenant}
         )
 
         send_response(conn, response)
@@ -39,7 +41,7 @@ defmodule NsaiGateway.Proxy do
         :telemetry.execute(
           [:nsai_gateway, :proxy, :error],
           %{duration: duration},
-          %{service: service, reason: reason}
+          %{service: service, reason: reason, tenant: tenant}
         )
 
         Logger.error("Proxy error for service #{service}: #{inspect(reason)}")
@@ -49,9 +51,8 @@ defmodule NsaiGateway.Proxy do
 
   defp proxy_request(conn, service, tenant) do
     with {:ok, backend_url} <- resolve_service(service, tenant),
-         {:ok, forwarded_path} <- build_path(conn),
-         {:ok, response} <- forward_request(backend_url, forwarded_path, conn) do
-      {:ok, response}
+         {:ok, forwarded_path} <- build_path(conn) do
+      forward_request(backend_url, forwarded_path, conn)
     end
   end
 
@@ -92,31 +93,51 @@ defmodule NsaiGateway.Proxy do
     url = "#{base_url}#{path}"
     headers = build_headers(conn)
     body = extract_body(conn)
+    service = extract_service(base_url)
 
-    case Req.request(
-           method: String.downcase(conn.method) |> String.to_atom(),
-           url: url,
-           headers: headers,
-           body: body,
-           retry: :transient,
-           max_retries: 3,
-           retry_delay: fn attempt -> 100 * :math.pow(2, attempt) end
-         ) do
-      {:ok, %Req.Response{} = response} ->
-        {:ok, response}
+    # Use circuit breaker for resilience
+    CircuitBreaker.call(service, fn ->
+      case Req.request(
+             method: String.downcase(conn.method) |> String.to_atom(),
+             url: url,
+             headers: headers,
+             body: body,
+             retry: :transient,
+             max_retries: 3,
+             retry_delay: fn attempt -> 100 * :math.pow(2, attempt) end,
+             receive_timeout: 30_000
+           ) do
+        {:ok, %Req.Response{} = response} ->
+          {:ok, response}
 
-      {:error, reason} ->
-        {:error, reason}
-    end
+        {:error, reason} ->
+          {:error, reason}
+      end
+    end)
   end
 
   defp build_headers(conn) do
     # Forward most headers, but filter out some
     filtered_headers = ["host", "connection", "content-length"]
 
-    conn.req_headers
-    |> Enum.reject(fn {name, _} -> name in filtered_headers end)
-    |> Map.new()
+    base_headers =
+      conn.req_headers
+      |> Enum.reject(fn {name, _} -> name in filtered_headers end)
+      |> Map.new()
+
+    # Add trace headers
+    trace_headers = Tracing.extract_trace_headers(conn)
+
+    Map.merge(base_headers, trace_headers)
+  end
+
+  defp extract_service(base_url) do
+    # Extract service name from URL for circuit breaker
+    base_url
+    |> String.replace(~r/^https?:\/\//, "")
+    |> String.split(":")
+    |> List.first()
+    |> String.replace(".", "_")
   end
 
   defp extract_body(conn) do
@@ -137,6 +158,11 @@ defmodule NsaiGateway.Proxy do
   defp send_error(conn, :service_not_found) do
     body = Jason.encode!(%{error: "Service not found"})
     send_resp(conn, 502, body)
+  end
+
+  defp send_error(conn, :circuit_open) do
+    body = Jason.encode!(%{error: "Service Unavailable", message: "Circuit breaker is open"})
+    send_resp(conn, 503, body)
   end
 
   defp send_error(conn, _reason) do

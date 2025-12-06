@@ -33,6 +33,7 @@ defmodule NsaiGateway do
   @doc """
   Returns the current version of the gateway.
   """
+  @spec version() :: String.t()
   def version do
     Application.spec(:nsai_gateway, :vsn) |> to_string()
   end

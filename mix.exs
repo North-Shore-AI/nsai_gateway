@@ -24,6 +24,7 @@ defmodule NsaiGateway.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      # Core dependencies
       {:plug, "~> 1.14"},
       {:plug_cowboy, "~> 2.6"},
       {:req, "~> 0.4"},
@@ -31,7 +32,16 @@ defmodule NsaiGateway.MixProject do
       {:hammer, "~> 6.1"},
       {:jason, "~> 1.4"},
       {:telemetry, "~> 1.2"},
-      {:telemetry_metrics, "~> 0.6"}
+      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_poller, "~> 1.0"},
+
+      # Circuit breaker and resilience
+      {:fuse, "~> 2.5"},
+
+      # Development and testing
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.31", only: :dev, runtime: false}
     ]
   end
 

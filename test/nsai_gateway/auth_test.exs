@@ -1,8 +1,10 @@
 defmodule NsaiGateway.AuthTest do
   use ExUnit.Case, async: true
-  use Plug.Test
+  import Plug.Test
+  import Plug.Conn
 
   alias NsaiGateway.Auth
+  alias NsaiGateway.Auth.JWT
 
   describe "authenticate/1" do
     test "authenticates with valid API key" do
@@ -30,7 +32,7 @@ defmodule NsaiGateway.AuthTest do
     end
 
     test "authenticates with valid JWT token" do
-      {:ok, token, _claims} = NsaiGateway.Auth.JWT.generate("tenant-alpha", "user-123", 3600)
+      {:ok, token, _claims} = JWT.generate("tenant-alpha", "user-123", 3600)
 
       conn =
         conn(:get, "/api/v1/jobs")

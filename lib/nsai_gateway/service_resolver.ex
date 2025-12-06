@@ -16,6 +16,7 @@ defmodule NsaiGateway.ServiceResolver do
 
   # Client API
 
+  @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
@@ -23,6 +24,7 @@ defmodule NsaiGateway.ServiceResolver do
   @doc """
   Resolves a service name to a backend URL.
   """
+  @spec resolve(String.t()) :: {:ok, String.t()} | {:error, :not_found | :unhealthy}
   def resolve(service) do
     GenServer.call(__MODULE__, {:resolve, service})
   end
@@ -30,6 +32,7 @@ defmodule NsaiGateway.ServiceResolver do
   @doc """
   Gets the health status of all services.
   """
+  @spec health_status() :: map()
   def health_status do
     GenServer.call(__MODULE__, :health_status)
   end
