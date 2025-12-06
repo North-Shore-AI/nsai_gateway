@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="460" viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients for depth -->
+    <linearGradient id="hexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F97316;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#EF4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DC2626;stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FED7AA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F97316;stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0F172A;stop-opacity:0.3" />
+      <stop offset="50%" style="stop-color:#0F172A;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#0F172A;stop-opacity:0.3" />
+    </linearGradient>
+
+    <!-- Shadow filter -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Hexagon background -->
+  <g filter="url(#shadow)">
+    <polygon points="200,20 350,110 350,290 200,380 50,290 50,110"
+             fill="url(#hexGradient)"
+             stroke="#0F172A"
+             stroke-width="3"/>
+  </g>
+
+  <!-- Inner hexagon border -->
+  <polygon points="200,40 330,120 330,280 200,360 70,280 70,120"
+           fill="none"
+           stroke="#FED7AA"
+           stroke-width="2"
+           opacity="0.5"/>
+
+  <!-- Shield/Gate structure -->
+  <g>
+    <!-- Shield outline -->
+    <path d="M 200,80 L 280,120 L 280,240 L 200,300 L 120,240 L 120,120 Z"
+          fill="url(#shieldGradient)"
+          stroke="#0F172A"
+          stroke-width="2.5"
+          opacity="0.9"/>
+
+    <!-- Gate opening (center) -->
+    <rect x="170" y="140" width="60" height="120"
+          fill="#0F172A"
+          rx="5"/>
+
+    <!-- Gate frame highlights -->
+    <rect x="165" y="140" width="4" height="120" fill="#FED7AA" opacity="0.6"/>
+    <rect x="231" y="140" width="4" height="120" fill="#FED7AA" opacity="0.6"/>
+
+    <!-- Horizontal bars (gate structure) -->
+    <rect x="170" y="170" width="60" height="3" fill="#F97316"/>
+    <rect x="170" y="200" width="60" height="3" fill="#F97316"/>
+    <rect x="170" y="230" width="60" height="3" fill="#F97316"/>
+  </g>
+
+  <!-- Data flow arrows (3 layers for depth) -->
+  <g opacity="0.8">
+    <!-- Top incoming arrow -->
+    <g>
+      <line x1="140" y1="100" x2="165" y2="125"
+            stroke="url(#arrowGradient)"
+            stroke-width="4"
+            stroke-linecap="round"/>
+      <polygon points="165,125 160,115 155,125" fill="#0F172A" opacity="0.8"/>
+    </g>
+
+    <!-- Middle incoming arrow -->
+    <g>
+      <line x1="140" y1="200" x2="165" y2="200"
+            stroke="url(#arrowGradient)"
+            stroke-width="4"
+            stroke-linecap="round"/>
+      <polygon points="165,200 155,195 155,205" fill="#0F172A" opacity="0.8"/>
+    </g>
+
+    <!-- Bottom incoming arrow -->
+    <g>
+      <line x1="140" y1="300" x2="165" y2="275"
+            stroke="url(#arrowGradient)"
+            stroke-width="4"
+            stroke-linecap="round"/>
+      <polygon points="165,275 160,285 155,275" fill="#0F172A" opacity="0.8"/>
+    </g>
+
+    <!-- Outgoing arrows (through gate) -->
+    <!-- Top outgoing -->
+    <g>
+      <line x1="235" y1="125" x2="260" y2="100"
+            stroke="url(#arrowGradient)"
+            stroke-width="4"
+            stroke-linecap="round"/>
+      <polygon points="260,100 255,110 265,110" fill="#0F172A" opacity="0.8"/>
+    </g>
+
+    <!-- Middle outgoing -->
+    <g>
+      <line x1="235" y1="200" x2="260" y2="200"
+            stroke="url(#arrowGradient)"
+            stroke-width="4"
+            stroke-linecap="round"/>
+      <polygon points="260,200 250,195 250,205" fill="#0F172A" opacity="0.8"/>
+    </g>
+
+    <!-- Bottom outgoing -->
+    <g>
+      <line x1="235" y1="275" x2="260" y2="300"
+            stroke="url(#arrowGradient)"
+            stroke-width="4"
+            stroke-linecap="round"/>
+      <polygon points="260,300 255,290 265,290" fill="#0F172A" opacity="0.8"/>
+    </g>
+  </g>
+
+  <!-- Lock icon (security element) -->
+  <g transform="translate(185, 145)">
+    <rect x="0" y="15" width="30" height="25" rx="3"
+          fill="#0F172A"
+          stroke="#F97316"
+          stroke-width="2"/>
+    <path d="M 8,15 L 8,10 Q 8,2 15,2 Q 22,2 22,10 L 22,15"
+          fill="none"
+          stroke="#F97316"
+          stroke-width="2.5"/>
+    <circle cx="15" cy="27" r="3" fill="#F97316"/>
+  </g>
+
+  <!-- Corner accents (hexagonal theme) -->
+  <g stroke="#FED7AA" stroke-width="2" fill="none" opacity="0.6">
+    <circle cx="200" cy="30" r="5"/>
+    <circle cx="340" cy="115" r="5"/>
+    <circle cx="340" cy="285" r="5"/>
+    <circle cx="200" cy="370" r="5"/>
+    <circle cx="60" cy="285" r="5"/>
+    <circle cx="60" cy="115" r="5"/>
+  </g>
+
+  <!-- Text: NSAI -->
+  <text x="200" y="415"
+        font-family="Arial, sans-serif"
+        font-size="36"
+        font-weight="bold"
+        fill="#0F172A"
+        text-anchor="middle">NSAI</text>
+
+  <!-- Text: Gateway -->
+  <text x="200" y="448"
+        font-family="Arial, sans-serif"
+        font-size="28"
+        font-weight="600"
+        fill="#EF4444"
+        text-anchor="middle">Gateway</text>
+</svg>

@@ -1,4 +1,22 @@
-# NSAI Gateway
+<p align="center">
+  <img src="assets/nsai_gateway.svg" alt="NSAI Gateway" width="200">
+</p>
+
+<h1 align="center">NSAI Gateway</h1>
+
+<p align="center">
+  <a href="https://github.com/North-Shore-AI/nsai_gateway/actions"><img src="https://github.com/North-Shore-AI/nsai_gateway/workflows/CI/badge.svg" alt="CI Status"></a>
+  <a href="https://hex.pm/packages/nsai_gateway"><img src="https://img.shields.io/hexpm/v/nsai_gateway.svg" alt="Hex.pm"></a>
+  <a href="https://hexdocs.pm/nsai_gateway"><img src="https://img.shields.io/badge/docs-hexdocs-blue.svg" alt="Documentation"></a>
+  <img src="https://img.shields.io/badge/elixir-%3E%3D%201.14-purple.svg" alt="Elixir">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License"></a>
+</p>
+
+<p align="center">
+  Unified API gateway with authentication, rate limiting, and observability
+</p>
+
+---
 
 Unified API Gateway for North Shore AI services, providing authentication, rate limiting, request routing, and telemetry.
 
