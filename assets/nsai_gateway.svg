@@ -153,19 +153,4 @@
     <circle cx="60" cy="115" r="5"/>
   </g>
 
-  <!-- Text: NSAI -->
-  <text x="200" y="415"
-        font-family="Arial, sans-serif"
-        font-size="36"
-        font-weight="bold"
-        fill="#0F172A"
-        text-anchor="middle">NSAI</text>
-
-  <!-- Text: Gateway -->
-  <text x="200" y="448"
-        font-family="Arial, sans-serif"
-        font-size="28"
-        font-weight="600"
-        fill="#EF4444"
-        text-anchor="middle">Gateway</text>
 </svg>
